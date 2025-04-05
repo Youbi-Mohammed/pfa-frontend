@@ -1,7 +1,19 @@
-export default function App() {
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SignUp from './pages/SignUp';
+
+const App = () => {
   return (
-    <div className="bg-blue-500 text-white text-center p-4">
-      TailwindCSS is now working!
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          {/* Route for the SignUp page */}
+          <Route path="/" element={<SignUp />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
+
+export default App;

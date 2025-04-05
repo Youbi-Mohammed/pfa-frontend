@@ -1,11 +1,16 @@
-import "./tailwindsetup.css";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
 
-export default function App() {
-  return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-500">
-        TailwindCSS is working!
-      </h1>
-    </div>
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
   );
+} else {
+  throw new Error("Root element not found");
 }
