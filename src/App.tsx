@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignUp from './pages/SignUp';
+import Student from './dashboards/student';
 
 const App = () => {
   return (
@@ -9,7 +10,8 @@ const App = () => {
       <div className="min-h-screen bg-gray-100">
         <Routes>
           {/* Route for the SignUp page */}
-          <Route path="/" element={<SignUp />} />
+          <Route path="/login" element={<SignUp />} />
+          <Route path="/" element={<Student />} />
         </Routes>
       </div>
     </Router>
