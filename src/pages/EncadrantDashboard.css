@@ -1,0 +1,128 @@
+/* Dashboard styles - simple, aesthetic, blue theme */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(to bottom right, #f0f9ff, #ffffff);
+  }
+  
+  /* Main content area */
+  .dashboard-content {
+    flex: 1;
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  /* Simple decorative elements */
+  .decorative-shape {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #e0f2fe;
+    opacity: 0.6;
+    z-index: 0;
+  }
+  
+  .shape-large {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    right: -100px;
+  }
+  
+  .shape-medium {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: 10%;
+  }
+  
+  /* Background icon */
+  .background-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18rem;
+    color: rgba(186, 230, 253, 0.4);
+    z-index: 0;
+  }
+  
+  /* Content wrapper */
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 500px;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    border: 1px solid #bae6fd;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Top bar decoration */
+  .content-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.375rem;
+    background-color: #38bdf8;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+  
+  /* Dashboard text */
+  .dashboard-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #0369a1;
+    margin-bottom: 0.75rem;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 400;
+  }
+  
+  /* Simple fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .dashboard-content {
+      padding: 1rem;
+    }
+    
+    .content-wrapper {
+      padding: 2rem;
+      width: 90%;
+    }
+    
+    .dashboard-title {
+      font-size: 1.75rem;
+    }
+    
+    .background-icon {
+      font-size: 12rem;
+    }
+  }
