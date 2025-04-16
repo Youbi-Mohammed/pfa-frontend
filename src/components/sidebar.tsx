@@ -1,4 +1,3 @@
-// Sidebar.tsx
 import React, { useState } from 'react';
 import './Sidebar.css';
 
@@ -24,11 +23,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const sidebarStyle = {
-    width: isOpen ? `${width}px` : '50px',
+    width: isOpen ? `${width}px` : '60px', // petite largeur pliée
   };
 
   return (
-    <div className="sidebar" style={sidebarStyle}>
+    <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={sidebarStyle}>
       <button
         className="sidebar-toggle"
         onClick={toggleSidebar}
@@ -37,21 +36,16 @@ const Sidebar: React.FC<SidebarProps> = ({
         {isOpen ? '◄' : '►'}
       </button>
 
-      {isOpen && (
-        <div className="sidebar-content">
-          <h2>Menu</h2>
-          <ul className="sidebar-menu">
-            {menuItems.map((item, index) => (
-              <li key={index} onClick={item.onClick} className="sidebar-item">
-                <button className="sidebar-button">
-                  {item.icon}
-                  <span>{item.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ul className="sidebar-menu">
+        {menuItems.map((item, index) => (
+          <li key={index} onClick={item.onClick} className="sidebar-item">
+            <button className="sidebar-button">
+              <span className="icon">{item.icon}</span>
+              {isOpen && <span className="label">{item.label}</span>}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

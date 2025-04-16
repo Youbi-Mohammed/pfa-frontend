@@ -2,13 +2,18 @@ import React from 'react';
 import Sidebar from '../components/sidebar';
 import './EncadrantDashboard.css';
 import {
-  FaHome,
-  FaPlusCircle,
-  FaList,
-  FaUsers,
-  FaCog,
-  FaLightbulb
-} from 'react-icons/fa';
+    FaHome,
+    FaPlusCircle,
+    FaList,
+    FaUsers,
+    FaLightbulb,
+    FaHourglassHalf,
+    FaBell,
+    FaArchive,
+    FaUserCircle,
+    FaSignOutAlt,
+  } from 'react-icons/fa';
+  
 
 const EncadrantDashboard = () => {
   const menuItems = [
@@ -25,9 +30,9 @@ const EncadrantDashboard = () => {
       iconColor: 'green'
     },
     {
-      label: 'My Topics',
+      label: 'My Proposed Topics',
       icon: <FaList />,
-      onClick: () => console.log('My Topics clicked'),
+      onClick: () => console.log('My Topics Proposed clicked'),
       iconColor: 'orange'
     },
     {
@@ -37,11 +42,41 @@ const EncadrantDashboard = () => {
       iconColor: 'teal'
     },
     {
-      label: 'Settings',
-      icon: <FaCog />,
-      onClick: () => console.log('Settings clicked'),
-      iconColor: 'pink'
-    },
+        label: 'Generate Requirements (AI)',
+        icon: <FaLightbulb />,
+        onClick: () => console.log('Generate Requirements clicked'),
+        iconColor: 'blue',
+      },
+      {
+        label: 'Phase Progress',
+        icon: <FaHourglassHalf />,
+        onClick: () => console.log('Phase Progress clicked'),
+        iconColor: 'brown',
+      },
+      {
+        label: 'Notifications',
+        icon: <FaBell />,
+        onClick: () => console.log('Notifications clicked'),
+        iconColor: 'red',
+      },
+      {
+        label: 'Topic History',
+        icon: <FaArchive />,
+        onClick: () => console.log('Topic History clicked'),
+        iconColor: 'gray',
+      },
+      {
+        label: 'Profile',
+        icon: <FaUserCircle />,
+        onClick: () => console.log('Profile clicked'),
+        iconColor: 'darkcyan',
+      },
+      {
+        label: 'Logout',
+        icon: <FaSignOutAlt />,
+        onClick: () => console.log('Logout clicked'),
+        iconColor: 'black',
+      },
   ];
 
   return (
