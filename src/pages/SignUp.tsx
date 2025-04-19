@@ -1,24 +1,62 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import "./SignUp.css"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { register, reset } from "../features/auth/authSlice"
+import { useNavigate } from "react-router-dom"
+import { RegisterData } from "../types/authTypes"
 
 export default function SignUp() {
-  const [role, setRole] = useState("etudiant") // Default role is 'etudiant'
+  const [role, setRole] = useState<"etudiant" | "encadrant" | "admin">("etudiant")
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
     firstName: "",
     lastName: "",
     email: "",
-    token: "", // Token for Encadrant
-    department: "", // Department for Encadrant
+    password: "",
+    cin: "",
+    branch: "",
+    imageUrl: "", 
   })
+  console.log(role)
   const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-  // Handle form input changes
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  )
+  
+  useEffect(() => {
+    if (user) {
+      switch (user.roleId) {
+        case 1:
+          navigate("/admin")
+          break
+        case 2:
+          navigate("/encadrant")
+          break
+        case 3:
+          navigate("/student")
+          break
+        default:
+          navigate("/")
+      }
+    }
+  
+    if (isError) {
+      console.error(message)
+    }
+
+    
+    return () => {
+      dispatch(reset()) 
+    }
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData({
@@ -27,41 +65,45 @@ export default function SignUp() {
     })
   }
 
-  // Handle role selection change
-  const handleRoleChange = (value: string) => {
+  const handleRoleChange = (value: "etudiant" | "encadrant" | "admin") => {
     setRole(value)
     setIsSelectOpen(false)
     setFormData({
-      // Reset form fields when role changes
-      username: "",
-      password: "",
       firstName: "",
       lastName: "",
       email: "",
-      token: "",
-      department: "",
+      password: "",
+      cin: "",
+      branch: "",
+      imageUrl: "",
     })
   }
 
-  // Handle form submission (registration logic)
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (role === "admin") {
-      // Submit as Admin
-      console.log("Admin registration", formData)
-    } else if (role === "encadrant") {
-      // Submit as Encadrant
-      console.log("Encadrant registration", formData)
-    } else {
-      // Submit as Etudiant
-      console.log("Etudiant registration", formData)
+  const getRoleId = (): number => {
+    switch (role) {
+      case "admin":
+        return 1
+      case "encadrant":
+        return 2
+      default:
+        return 3
     }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const userData: RegisterData = {
+      ...formData,
+      roleId: getRoleId(),
+    }
+
+    await dispatch(register(userData)).unwrap()
   }
 
   return (
     <div className="signup-container">
       <div className="signup-card">
-        {/* Decorative elements */}
         <div className="top-bar"></div>
         <div className="circle circle-top-right"></div>
         <div className="circle circle-bottom-left"></div>
@@ -82,177 +124,50 @@ export default function SignUp() {
         <div className="card-content">
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="form-group">
-              <label htmlFor="role" className="form-label">
-                Role
-              </label>
+              <label htmlFor="role" className="form-label">Role</label>
               <div className="custom-select">
-                <button type="button" className="select-trigger" onClick={() => setIsSelectOpen(!isSelectOpen)}>
+                <button type="button" className="select-trigger" onClick={() => setIsSelectOpen(!isSelectOpen)} disabled={isLoading}>
                   {role === "etudiant" ? "Etudiant" : role === "encadrant" ? "Encadrant" : "Admin"}
                   <span className="select-arrow">▼</span>
                 </button>
                 {isSelectOpen && (
                   <div className="select-content">
-                    <div
-                      className={`select-item ${role === "etudiant" ? "selected" : ""}`}
-                      onClick={() => handleRoleChange("etudiant")}
-                    >
-                      Etudiant
-                    </div>
-                    <div
-                      className={`select-item ${role === "encadrant" ? "selected" : ""}`}
-                      onClick={() => handleRoleChange("encadrant")}
-                    >
-                      Encadrant
-                    </div>
-                    <div
-                      className={`select-item ${role === "admin" ? "selected" : ""}`}
-                      onClick={() => handleRoleChange("admin")}
-                    >
-                      Admin
-                    </div>
+                    {["etudiant", "encadrant", "admin"].map((r) => (
+                      <div
+                        key={r}
+                        className={`select-item ${role === r ? "selected" : ""}`}
+                        onClick={() => handleRoleChange(r as typeof role)}
+                      >
+                        {r.charAt(0).toUpperCase() + r.slice(1)}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
-
-            {/* Display Name fields first for Admin and Encadrant */}
-            {role !== "etudiant" && (
-              <>
-                <div className="form-group">
-                  <label htmlFor="firstName" className="form-label">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="lastName" className="form-label">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className="form-input"
-                    required
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Show only for Etudiant */}
-            {role === "etudiant" && (
-              <div className="form-group">
-                <label htmlFor="username" className="form-label">
-                  Username
-                </label>
+            {['firstName', 'lastName', 'email', 'cin', 'branch', 'imageUrl', 'password'].map((field) => (
+              <div className="form-group" key={field}>
+                <label htmlFor={field} className="form-label">{field}</label>
                 <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
+                  type={field === 'password' ? 'password' : 'text'}
+                  name={field}
+                  value={formData[field as keyof typeof formData]}
                   onChange={handleChange}
                   className="form-input"
                   required
+                  disabled={isLoading}
                 />
               </div>
-            )}
+            ))}
 
-            {/* Password for all roles */}
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
-            </div>
-
-            {/* Display additional fields based on role */}
-            {role !== "etudiant" && (
-              <motion.div
-                className="additional-fields"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="form-group">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                {/* Display Department field for Encadrant only */}
-                {role === "encadrant" && (
-                  <div className="form-group">
-                    <label htmlFor="department" className="form-label">
-                      Department
-                    </label>
-                    <input
-                      type="text"
-                      id="department"
-                      name="department"
-                      value={formData.department}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                    />
-                  </div>
-                )}
-
-                {role === "encadrant" && (
-                  <motion.div
-                    className="form-group"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <label htmlFor="token" className="form-label">
-                      Invitation Token
-                    </label>
-                    <input
-                      type="text"
-                      id="token"
-                      name="token"
-                      value={formData.token}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                    />
-                  </motion.div>
-                )}
+            <button type="submit" className="submit-button" disabled={isLoading}>
+              {isLoading ? "Processing..." : "Sign Up"}
+            </button>
+            {message && (
+              <motion.div className={`message ${isError ? "error" : "success"}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                {message}
               </motion.div>
             )}
-
-            {/* Submit Button */}
-            <button type="submit" className="submit-button">
-              Sign Up
-            </button>
           </form>
         </div>
       </div>
