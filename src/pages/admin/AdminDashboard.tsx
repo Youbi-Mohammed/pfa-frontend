@@ -1,6 +1,8 @@
 import React from 'react';
 import Sidebar from '../../components/sidebar';
 import './AdminDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import TokenTest from '../TokenTest';
 import {
   FaHome,
   FaUserShield,
@@ -15,6 +17,8 @@ import {
 } from 'react-icons/fa';
 
 const AdminDashboard = () => {
+    const navigate = useNavigate();
+  
   const menuItems = [
     {
       label: 'Dashboard',
@@ -49,21 +53,21 @@ const AdminDashboard = () => {
     {
       label: 'Reports & Stats',
       icon: <FaChartPie />,
-      onClick: () => console.log('Reports clicked'),
+      onClick: () => navigate('/create-project'),
       iconColor: 'brown',
     },
     {
       label: 'Notifications',
       icon: <FaBell />,
-      onClick: () => console.log('Notifications clicked'),
+      onClick: () => navigate('/test-auth'),
       iconColor: 'red',
     },
-    {
-      label: 'Profile',
-      icon: <FaUserCircle />,
-      onClick: () => console.log('Profile clicked'),
-      iconColor: 'darkcyan',
-    },
+   {
+           label: 'Profile',
+           icon: <FaUserCircle />,
+           onClick: () => navigate('/test-connection'),
+           iconColor: 'darkcyan',
+         },
     {
       label: 'Logout',
       icon: <FaSignOutAlt />,

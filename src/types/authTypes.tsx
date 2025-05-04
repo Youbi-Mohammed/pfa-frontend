@@ -48,3 +48,29 @@ export interface LoginData {
     iat: number
     exp: number
   }
+  // types/axios.d.ts 
+import 'axios';
+
+declare module 'axios' {
+  // 1. Déclarez d'abord vos interfaces personnalisées
+  export interface ApiResponseData<T = any> {
+    data: T;
+    message?: string;
+    status?: number;
+  }
+
+  export interface ApiErrorData {
+    statusCode: number;
+    message: string;
+    error?: string;
+  }
+
+  // 2. Étendez les interfaces Axios existantes SANS modifier leurs paramètres génériques
+  export interface AxiosResponse<T = any, D = any> {
+    apiData?: ApiResponseData<T>;
+  }
+
+  export interface AxiosError<T = unknown, D = any> {
+    apiError?: ApiErrorData;
+  }
+}

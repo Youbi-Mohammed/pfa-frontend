@@ -1,6 +1,8 @@
 import React from 'react';
 import Sidebar from '../components/sidebar';
 import './EncadrantDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import TokenTest from './TokenTest';
 import {
     FaHome,
     FaPlusCircle,
@@ -16,6 +18,8 @@ import {
   
 
 const EncadrantDashboard = () => {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       label: 'Dashboard',
@@ -26,7 +30,7 @@ const EncadrantDashboard = () => {
     {
       label: 'Propose a Topic',
       icon: <FaPlusCircle />,
-      onClick: () => console.log('Propose clicked'),
+      onClick: () => navigate('/create-project'),
       iconColor: 'green'
     },
     {
@@ -68,7 +72,7 @@ const EncadrantDashboard = () => {
       {
         label: 'Profile',
         icon: <FaUserCircle />,
-        onClick: () => console.log('Profile clicked'),
+        onClick: () => navigate('/test-connection'),
         iconColor: 'darkcyan',
       },
       {
